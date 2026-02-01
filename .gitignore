@@ -1,9 +1,7 @@
 # Xcode
 build/
 DerivedData/
-*.xcodeproj/xcuserdata/
-*.xcworkspace/xcuserdata/
-*.xcodeproj/project.xcworkspace/xcuserdata/
+xcuserdata/
 *.pbxuser
 *.mode1v3
 *.mode2v3
@@ -15,6 +13,10 @@ DerivedData/
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+# Xcode workspace - keep contents.xcworkspacedata, ignore user data
+project.xcworkspace/xcshareddata/
+project.xcworkspace/xcuserdata/
 
 # Swift Package Manager
 .build/
