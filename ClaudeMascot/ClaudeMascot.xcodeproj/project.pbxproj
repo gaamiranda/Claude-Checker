@@ -13,6 +13,8 @@
 		A1000003001000010010 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010001 /* KeychainService.swift */; };
 		A1000003001000010011 /* UsageAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010002 /* UsageAPIClient.swift */; };
 		A1000004001000010010 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004001000010001 /* UsageViewModel.swift */; };
+		A1000005001000010010 /* UsageProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010001 /* UsageProgressBar.swift */; };
+		A1000005001000010011 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010002 /* DashboardView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -25,6 +27,8 @@
 		A1000003001000010001 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		A1000003001000010002 /* UsageAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAPIClient.swift; sourceTree = "<group>"; };
 		A1000004001000010001 /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
+		A1000005001000010001 /* UsageProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageProgressBar.swift; sourceTree = "<group>"; };
+		A1000005001000010002 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 		A1000001001000010035 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				A1000005001000010001 /* UsageProgressBar.swift */,
+				A1000005001000010002 /* DashboardView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -175,6 +181,8 @@
 				A1000003001000010010 /* KeychainService.swift in Sources */,
 				A1000003001000010011 /* UsageAPIClient.swift in Sources */,
 				A1000004001000010010 /* UsageViewModel.swift in Sources */,
+				A1000005001000010010 /* UsageProgressBar.swift in Sources */,
+				A1000005001000010011 /* DashboardView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
