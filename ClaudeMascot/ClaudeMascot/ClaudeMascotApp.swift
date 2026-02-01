@@ -15,6 +15,9 @@ struct ClaudeMascotApp: App {
         let vm = UsageViewModel()
         _viewModel = State(initialValue: vm)
         
+        // Initialize launch at login on first launch (enabled by default)
+        LaunchAtLoginService.initializeOnFirstLaunch()
+        
         // Start auto-refresh immediately on app launch
         vm.startAutoRefresh()
     }

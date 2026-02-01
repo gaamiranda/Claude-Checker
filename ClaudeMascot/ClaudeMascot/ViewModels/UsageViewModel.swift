@@ -35,6 +35,16 @@ class UsageViewModel {
     /// Timestamp of last successful data fetch
     var lastUpdated: Date?
     
+    /// Whether the app should launch at login
+    var launchAtLogin: Bool {
+        get {
+            LaunchAtLoginService.isEnabled
+        }
+        set {
+            LaunchAtLoginService.setEnabled(newValue)
+        }
+    }
+    
     // MARK: - Computed Properties
     
     /// Color for the menu bar icon based on session usage

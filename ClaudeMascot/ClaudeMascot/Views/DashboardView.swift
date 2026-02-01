@@ -181,6 +181,12 @@ struct DashboardView: View {
                 .opacity(viewModel.isLoading ? 0.5 : 1.0)
             }
             
+            // Launch at Login toggle
+            @Bindable var bindableViewModel = viewModel
+            Toggle("Launch at Login", isOn: $bindableViewModel.launchAtLogin)
+                .toggleStyle(.checkbox)
+                .font(.caption)
+            
             // Quit button
             Button("Quit") {
                 NSApplication.shared.terminate(nil)

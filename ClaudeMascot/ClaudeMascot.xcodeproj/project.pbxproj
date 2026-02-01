@@ -12,6 +12,7 @@
 		A1000002001000010011 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002001000010002 /* UsageModels.swift */; };
 		A1000003001000010010 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010001 /* KeychainService.swift */; };
 		A1000003001000010011 /* UsageAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010002 /* UsageAPIClient.swift */; };
+		A1000003001000010012 /* LaunchAtLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010003 /* LaunchAtLoginService.swift */; };
 		A1000004001000010010 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004001000010001 /* UsageViewModel.swift */; };
 		A1000005001000010010 /* UsageProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010001 /* UsageProgressBar.swift */; };
 		A1000005001000010011 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010002 /* DashboardView.swift */; };
@@ -26,6 +27,7 @@
 		A1000002001000010002 /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
 		A1000003001000010001 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		A1000003001000010002 /* UsageAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAPIClient.swift; sourceTree = "<group>"; };
+		A1000003001000010003 /* LaunchAtLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginService.swift; sourceTree = "<group>"; };
 		A1000004001000010001 /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
 		A1000005001000010001 /* UsageProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageProgressBar.swift; sourceTree = "<group>"; };
 		A1000005001000010002 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
@@ -77,6 +79,7 @@
 			isa = PBXGroup;
 			children = (
 				A1000003001000010001 /* KeychainService.swift */,
+				A1000003001000010003 /* LaunchAtLoginService.swift */,
 				A1000003001000010002 /* UsageAPIClient.swift */,
 			);
 			path = Services;
@@ -180,6 +183,7 @@
 				A1000002001000010011 /* UsageModels.swift in Sources */,
 				A1000003001000010010 /* KeychainService.swift in Sources */,
 				A1000003001000010011 /* UsageAPIClient.swift in Sources */,
+				A1000003001000010012 /* LaunchAtLoginService.swift in Sources */,
 				A1000004001000010010 /* UsageViewModel.swift in Sources */,
 				A1000005001000010010 /* UsageProgressBar.swift in Sources */,
 				A1000005001000010011 /* DashboardView.swift in Sources */,
