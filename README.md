@@ -8,12 +8,6 @@ A macOS menu bar app that displays your Claude API usage at a glance. See your s
 
 ## Features
 
-- **Menu Bar Icon** - A color-coded "C" icon shows your usage status at a glance:
-  - **Green** (0-30% session usage) - Plenty of capacity remaining
-  - **Blue** (30-70% session usage) - Moderate usage
-  - **Red** (70-100% session usage) - Approaching limit
-  - **Gray** - Loading or error state
-
 - **Detailed Dashboard** - Click the icon to see:
   - Session usage (5-hour window)
   - Weekly usage (7-day aggregate)
