@@ -16,6 +16,7 @@
 		A1000004001000010010 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004001000010001 /* UsageViewModel.swift */; };
 		A1000005001000010010 /* UsageProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010001 /* UsageProgressBar.swift */; };
 		A1000005001000010011 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010002 /* DashboardView.swift */; };
+		A1000006001000010010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000006001000010001 /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +32,7 @@
 		A1000004001000010001 /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
 		A1000005001000010001 /* UsageProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageProgressBar.swift; sourceTree = "<group>"; };
 		A1000005001000010002 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
+		A1000006001000010001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +60,7 @@
 				A1000001001000010001 /* ClaudeMascotApp.swift */,
 				A1000001001000010002 /* Info.plist */,
 				A1000001001000010003 /* ClaudeMascot.entitlements */,
+				A1000006001000010001 /* Assets.xcassets */,
 				A1000001001000010032 /* Models */,
 				A1000001001000010033 /* Services */,
 				A1000001001000010034 /* ViewModels */,
@@ -168,6 +171,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000006001000010010 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
