@@ -15,9 +15,22 @@ enum LaunchAtLoginService {
     // MARK: - Public API
     
     /// Whether launch at login is currently enabled
+    /// Returns the actual system status, or falls back to stored preference
     static var isEnabled: Bool {
         get {
-            loginItem.status == .enabled
+            // Check actual system status first
+            let status = loginItem.status
+            switch status {
+            case .enabled:
+                return true
+            case .notRegistered, .notFound:
+                return false
+            case .requiresApproval:
+                // User needs to approve in System Settings
+                return UserDefaults.standard.bool(forKey: preferenceKey)
+            @unknown default:
+                return UserDefaults.standard.bool(forKey: preferenceKey)
+            }
         }
         set {
             setEnabled(newValue)
@@ -31,7 +44,12 @@ enum LaunchAtLoginService {
     
     /// Enable or disable launch at login
     /// - Parameter enabled: Whether to enable launch at login
-    static func setEnabled(_ enabled: Bool) {
+    /// - Returns: Whether the operation succeeded
+    @discardableResult
+    static func setEnabled(_ enabled: Bool) -> Bool {
+        // Store the user's preference first
+        UserDefaults.standard.set(enabled, forKey: preferenceKey)
+        
         do {
             if enabled {
                 try loginItem.register()
@@ -39,11 +57,15 @@ enum LaunchAtLoginService {
                 try loginItem.unregister()
             }
             
-            // Store the user's preference
-            UserDefaults.standard.set(enabled, forKey: preferenceKey)
+            print("LaunchAtLoginService: Successfully \(enabled ? "enabled" : "disabled") launch at login. Status: \(loginItem.status)")
+            return true
         } catch {
-            // Log but don't throw - SMAppService can fail silently in some cases
+            // Log the error - SMAppService can fail for various reasons
+            // Common reasons: app not properly signed, running from debug location, etc.
             print("LaunchAtLoginService: Failed to \(enabled ? "enable" : "disable") launch at login: \(error)")
+            print("LaunchAtLoginService: Current status: \(loginItem.status)")
+            print("LaunchAtLoginService: Note - This often fails for debug builds. Install the Release build in /Applications for full functionality.")
+            return false
         }
     }
     

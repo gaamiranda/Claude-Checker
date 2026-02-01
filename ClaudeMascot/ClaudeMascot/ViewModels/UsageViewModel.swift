@@ -35,13 +35,12 @@ class UsageViewModel {
     /// Timestamp of last successful data fetch
     var lastUpdated: Date?
     
-    /// Whether the app should launch at login
-    var launchAtLogin: Bool {
-        get {
-            LaunchAtLoginService.isEnabled
-        }
-        set {
-            LaunchAtLoginService.setEnabled(newValue)
+    /// Whether the app should launch at login (stored locally for UI binding)
+    var launchAtLogin: Bool = UserDefaults.standard.bool(forKey: "launchAtLogin") {
+        didSet {
+            if launchAtLogin != oldValue {
+                LaunchAtLoginService.setEnabled(launchAtLogin)
+            }
         }
     }
     
