@@ -53,14 +53,16 @@ enum KeychainService {
     static let fallbackPath = "~/.claude/.credentials.json"
     
     /// Retrieves credentials from Keychain or fallback file
-    /// - Returns: Parsed credentials
+    /// - Returns: Parsed OAuth credentials
     /// - Throws: CredentialError if credentials cannot be found or parsed
-    static func getCredentials() throws -> Credentials {
+    static func getCredentials() throws -> OAuthCredentials {
         // Try Keychain first
         if let data = readFromKeychain() {
             do {
                 let decoder = JSONDecoder()
-                return try decoder.decode(Credentials.self, from: data)
+                // Try parsing as the nested KeychainCredentials structure
+                let keychainCreds = try decoder.decode(KeychainCredentials.self, from: data)
+                return keychainCreds.claudeAiOauth
             } catch {
                 throw CredentialError.invalidFormat(error)
             }
@@ -96,9 +98,9 @@ enum KeychainService {
     }
     
     /// Reads credentials from the fallback JSON file
-    /// - Returns: Parsed credentials
+    /// - Returns: Parsed OAuth credentials
     /// - Throws: CredentialError if file cannot be read or parsed
-    private static func readFromFile() throws -> Credentials {
+    private static func readFromFile() throws -> OAuthCredentials {
         let expandedPath = NSString(string: fallbackPath).expandingTildeInPath
         let fileURL = URL(fileURLWithPath: expandedPath)
         
@@ -109,11 +111,20 @@ enum KeychainService {
             throw CredentialError.notFound
         }
         
+        let decoder = JSONDecoder()
+        
+        // Try parsing as KeychainCredentials first (nested structure)
         do {
-            let decoder = JSONDecoder()
-            return try decoder.decode(Credentials.self, from: data)
+            let keychainCreds = try decoder.decode(KeychainCredentials.self, from: data)
+            return keychainCreds.claudeAiOauth
         } catch {
-            throw CredentialError.invalidFormat(error)
+            // Fall back to legacy flat structure
+            do {
+                let legacyCreds = try decoder.decode(LegacyCredentials.self, from: data)
+                return legacyCreds.toOAuthCredentials()
+            } catch {
+                throw CredentialError.invalidFormat(error)
+            }
         }
     }
 }

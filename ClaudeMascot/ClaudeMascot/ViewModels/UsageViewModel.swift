@@ -122,11 +122,11 @@ class UsageViewModel {
             let usage = try await apiClient.fetchUsage(token: credentials.accessToken)
             
             // Update state with fetched data
-            sessionPercentage = usage.fiveHour ?? 0
-            weeklyPercentage = usage.sevenDay ?? 0
-            sonnetPercentage = usage.sevenDaySonnet ?? 0
+            sessionPercentage = usage.fiveHour?.percentage ?? 0
+            weeklyPercentage = usage.sevenDay?.percentage ?? 0
+            sonnetPercentage = usage.sevenDaySonnet?.percentage ?? 0
             
-            if let extra = usage.extraUsage {
+            if let extra = usage.extraUsage, extra.hasData {
                 extraSpend = extra.spend
                 extraLimit = extra.limit
             } else {
