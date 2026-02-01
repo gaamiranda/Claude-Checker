@@ -1,7 +1,7 @@
 import SwiftUI
 
 @main
-struct ClaudeMascotApp: App {
+struct ClaudeCheckerApp: App {
     
     // MARK: - State
     

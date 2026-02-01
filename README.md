@@ -1,4 +1,4 @@
-# ClaudeMascot
+# Claude-Checker
 
 A macOS menu bar app that displays your Claude API usage at a glance. See your session and weekly usage limits with a color-coded icon that changes based on your current consumption.
 
@@ -35,33 +35,33 @@ A macOS menu bar app that displays your Claude API usage at a glance. See your s
 ### Option 1: Download Release (Recommended)
 
 1. Go to [Releases](../../releases)
-2. Download the latest `ClaudeMascot.app.zip`
-3. Extract and move `ClaudeMascot.app` to your `/Applications` folder
+2. Download the latest `Claude-Checker.app.zip`
+3. Extract and move `Claude-Checker.app` to your `/Applications` folder
 4. Open the app (you may need to right-click → Open the first time)
 
 ### Option 2: Build from Source
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/claude-mascot.git
-   cd claude-mascot/ClaudeMascot
+   git clone https://github.com/yourusername/claude-checker.git
+   cd claude-checker/Claude-Checker
    ```
 
 2. Build the app:
    ```bash
-   xcodebuild -scheme ClaudeMascot -configuration Release build
+   xcodebuild -scheme Claude-Checker -configuration Release build
    ```
 
 3. Copy to Applications:
    ```bash
-   cp -R ~/Library/Developer/Xcode/DerivedData/ClaudeMascot-*/Build/Products/Release/ClaudeMascot.app /Applications/
+   cp -R ~/Library/Developer/Xcode/DerivedData/Claude-Checker-*/Build/Products/Release/Claude-Checker.app /Applications/
    ```
 
-4. Launch the app from `/Applications/ClaudeMascot.app`
+4. Launch the app from `/Applications/Claude-Checker.app`
 
 ## How It Works
 
-ClaudeMascot reads your Claude authentication credentials and fetches usage data from Anthropic's API.
+Claude-Checker reads your Claude authentication credentials and fetches usage data from Anthropic's API.
 
 ### Authentication Flow
 
@@ -73,10 +73,10 @@ ClaudeMascot reads your Claude authentication credentials and fetches usage data
 
 When you authenticate with Claude Code (`claude` CLI), your OAuth credentials are securely stored in the macOS Keychain under the service name `Claude Code-credentials`. 
 
-ClaudeMascot needs to read these credentials to fetch your usage data. This is why:
+Claude-Checker needs to read these credentials to fetch your usage data. This is why:
 
 - **The app runs without sandbox** - macOS sandboxing would prevent access to credentials stored by other apps
-- **No password is stored by ClaudeMascot** - It only reads the existing credentials from Claude Code
+- **No password is stored by Claude-Checker** - It only reads the existing credentials from Claude Code
 - **Your credentials never leave your machine** - They're only used to make API calls to Anthropic
 
 If you haven't authenticated with Claude Code yet, run:
@@ -93,7 +93,7 @@ If Keychain access fails, the app falls back to reading credentials from:
 
 ## Privacy & Security
 
-- **No data collection** - ClaudeMascot doesn't collect or transmit any personal data
+- **No data collection** - Claude-Checker doesn't collect or transmit any personal data
 - **Local only** - All processing happens on your machine
 - **Open source** - You can audit the code yourself
 - **Credentials stay secure** - OAuth tokens are read from Keychain, never stored separately
@@ -110,7 +110,7 @@ If Keychain access fails, the app falls back to reading credentials from:
 
 ### Launch at Login
 
-Toggle "Launch at Login" in the dashboard to have ClaudeMascot start automatically when you log in to your Mac.
+Toggle "Launch at Login" in the dashboard to have Claude-Checker start automatically when you log in to your Mac.
 
 ### Manual Refresh
 
@@ -141,7 +141,7 @@ claude login
 
 ### Icon Not Showing in Menu Bar
 
-1. Check if the app is running: `ps aux | grep ClaudeMascot`
+1. Check if the app is running: `ps aux | grep Claude-Checker`
 2. Try quitting and relaunching the app
 3. Check System Settings → Control Center → Menu Bar Only to ensure it's not hidden
 
@@ -177,8 +177,8 @@ Headers:
 ### Project Structure
 
 ```
-ClaudeMascot/
-├── ClaudeMascotApp.swift      # App entry point, MenuBarExtra setup
+Claude-Checker/
+├── ClaudeCheckerApp.swift      # App entry point, MenuBarExtra setup
 ├── Info.plist                  # LSUIElement=true (no dock icon)
 ├── Assets.xcassets/            # App icon
 ├── Models/
