@@ -10,6 +10,8 @@
 		A1000001001000010010 /* ClaudeMascotApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001001000010001 /* ClaudeMascotApp.swift */; };
 		A1000002001000010010 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002001000010001 /* Credentials.swift */; };
 		A1000002001000010011 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002001000010002 /* UsageModels.swift */; };
+		A1000003001000010010 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010001 /* KeychainService.swift */; };
+		A1000003001000010011 /* UsageAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010002 /* UsageAPIClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +21,8 @@
 		A1000001001000010004 /* ClaudeMascot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ClaudeMascot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1000002001000010001 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		A1000002001000010002 /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
+		A1000003001000010001 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		A1000003001000010002 /* UsageAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAPIClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +70,8 @@
 		A1000001001000010033 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				A1000003001000010001 /* KeychainService.swift */,
+				A1000003001000010002 /* UsageAPIClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -163,6 +169,8 @@
 				A1000001001000010010 /* ClaudeMascotApp.swift in Sources */,
 				A1000002001000010010 /* Credentials.swift in Sources */,
 				A1000002001000010011 /* UsageModels.swift in Sources */,
+				A1000003001000010010 /* KeychainService.swift in Sources */,
+				A1000003001000010011 /* UsageAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
