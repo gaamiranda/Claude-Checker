@@ -29,11 +29,20 @@ class UsageViewModel {
     /// Whether data is currently being fetched
     var isLoading = false
     
+    /// Whether this is the first load (no data yet)
+    var isFirstLoad = true
+    
     /// Error message if last fetch failed
     var errorMessage: String?
     
     /// Timestamp of last successful data fetch
     var lastUpdated: Date?
+    
+    /// Reset time for session window (parsed from API)
+    var sessionResetsAt: Date?
+    
+    /// Reset time for weekly window (parsed from API)
+    var weeklyResetsAt: Date?
     
     /// Whether the app should launch at login (stored locally for UI binding)
     var launchAtLogin: Bool = UserDefaults.standard.bool(forKey: "launchAtLogin") {
@@ -48,8 +57,8 @@ class UsageViewModel {
     
     /// Color for the menu bar icon based on session usage
     var statusColor: Color {
-        // Gray if there's an error
-        if errorMessage != nil {
+        // Gray if loading for the first time or error
+        if isFirstLoad || errorMessage != nil {
             return .gray
         }
         
@@ -135,6 +144,10 @@ class UsageViewModel {
             weeklyPercentage = usage.sevenDay?.percentage ?? 0
             sonnetPercentage = usage.sevenDaySonnet?.percentage ?? 0
             
+            // Parse reset times
+            sessionResetsAt = parseResetTime(usage.fiveHour?.resetsAt)
+            weeklyResetsAt = parseResetTime(usage.sevenDay?.resetsAt)
+            
             if let extra = usage.extraUsage, extra.hasData {
                 extraSpend = extra.spend
                 extraLimit = extra.limit
@@ -144,6 +157,7 @@ class UsageViewModel {
             }
             
             lastUpdated = Date()
+            isFirstLoad = false
             
         } catch {
             errorMessage = error.localizedDescription
@@ -156,5 +170,23 @@ class UsageViewModel {
     
     deinit {
         refreshTask?.cancel()
+    }
+    
+    // MARK: - Private Helpers
+    
+    /// Parses ISO8601 date string from API
+    private func parseResetTime(_ dateString: String?) -> Date? {
+        guard let dateString = dateString else { return nil }
+        
+        let formatter = ISO8601DateFormatter()
+        formatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        
+        if let date = formatter.date(from: dateString) {
+            return date
+        }
+        
+        // Try without fractional seconds
+        formatter.formatOptions = [.withInternetDateTime]
+        return formatter.date(from: dateString)
     }
 }

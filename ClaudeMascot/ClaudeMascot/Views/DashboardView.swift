@@ -18,7 +18,9 @@ struct DashboardView: View {
             Divider()
             
             // Content
-            if let error = viewModel.errorMessage {
+            if viewModel.isFirstLoad && viewModel.isLoading {
+                loadingSection
+            } else if let error = viewModel.errorMessage {
                 errorSection(error)
             } else {
                 usageSection
@@ -71,6 +73,21 @@ struct DashboardView: View {
         }
     }
     
+    // MARK: - Loading Section
+    
+    private var loadingSection: some View {
+        HStack(spacing: 12) {
+            ProgressView()
+                .scaleEffect(0.8)
+            
+            Text("Loading usage data...")
+                .font(.callout)
+                .foregroundStyle(.secondary)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 24)
+    }
+    
     // MARK: - Error Section
     
     private func errorSection(_ error: String) -> some View {
@@ -93,13 +110,15 @@ struct DashboardView: View {
             // Session (5-hour window)
             UsageProgressBar(
                 label: "Session (5-hour)",
-                value: viewModel.sessionPercentage
+                value: viewModel.sessionPercentage,
+                subtitle: formatResetTime(viewModel.sessionResetsAt)
             )
             
             // Weekly (7-day aggregate)
             UsageProgressBar(
                 label: "Weekly (7-day)",
-                value: viewModel.weeklyPercentage
+                value: viewModel.weeklyPercentage,
+                subtitle: formatResetTime(viewModel.weeklyResetsAt)
             )
             
             // Sonnet weekly
@@ -114,6 +133,20 @@ struct DashboardView: View {
                 extraUsageSection
             }
         }
+    }
+    
+    /// Formats reset time as relative text
+    private func formatResetTime(_ date: Date?) -> String? {
+        guard let date = date else { return nil }
+        
+        let now = Date()
+        if date <= now {
+            return nil
+        }
+        
+        let formatter = RelativeDateTimeFormatter()
+        formatter.unitsStyle = .abbreviated
+        return "Resets \(formatter.localizedString(for: date, relativeTo: now))"
     }
     
     // MARK: - Extra Usage Section
@@ -160,7 +193,7 @@ struct DashboardView: View {
                     Text("Updated \(lastUpdated, format: .relative(presentation: .named))")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
-                } else {
+                } else if !viewModel.isFirstLoad {
                     Text("Not yet updated")
                         .font(.caption)
                         .foregroundStyle(.tertiary)
@@ -175,10 +208,16 @@ struct DashboardView: View {
                 } label: {
                     Image(systemName: "arrow.clockwise")
                         .font(.caption)
+                        .rotationEffect(.degrees(viewModel.isLoading ? 360 : 0))
+                        .animation(
+                            viewModel.isLoading 
+                                ? .linear(duration: 1).repeatForever(autoreverses: false) 
+                                : .default,
+                            value: viewModel.isLoading
+                        )
                 }
                 .buttonStyle(.plain)
                 .disabled(viewModel.isLoading)
-                .opacity(viewModel.isLoading ? 0.5 : 1.0)
             }
             
             // Launch at Login toggle
