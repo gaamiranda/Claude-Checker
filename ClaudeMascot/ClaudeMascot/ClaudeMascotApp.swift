@@ -28,8 +28,8 @@ struct ClaudeMascotApp: App {
         MenuBarExtra {
             DashboardView(viewModel: viewModel)
         } label: {
-            // Dynamic colored circle based on usage
-            Image(systemName: "circle.fill")
+            // Dynamic colored "C" in square based on usage
+            Image(systemName: "c.square.fill")
                 .foregroundStyle(viewModel.statusColor)
         }
         .menuBarExtraStyle(.window)
