@@ -1,6 +1,6 @@
 # Claude-Checker
 
-A macOS menu bar app that displays your Claude API usage at a glance. See your session and weekly usage limits with a color-coded icon that changes based on your current consumption.
+A macOS menu bar app that displays your Claude and Cursor API usage at a glance. See your usage limits with color-coded progress bars that show your current consumption.
 
 ![macOS](https://img.shields.io/badge/macOS-14.0%2B-blue)
 ![Swift](https://img.shields.io/badge/Swift-5.9-orange)
@@ -8,27 +8,32 @@ A macOS menu bar app that displays your Claude API usage at a glance. See your s
 
 ## Features
 
-- **Detailed Dashboard** - Click the icon to see:
+- **Tabbed Interface** - Switch between Claude and Cursor usage tracking
+- **Claude Usage Dashboard**:
   - Session usage (5-hour window)
   - Weekly usage (7-day aggregate)
   - Sonnet-specific weekly usage
   - Extra usage spending (if enabled)
   - Time until usage resets
-
+- **Cursor Usage Dashboard**:
+  - Plan usage with spending limits (Pro: $20, Pro+: $60, Ultra: $200)
+  - On-demand usage tracking
+  - Billing cycle reset date
+  - Membership type display
 - **Auto-Refresh** - Usage data updates automatically every 5 minutes
 - **Launch at Login** - Optionally start the app when you log in
 
 ## Screenshots
 
-| Menu Bar | Dashboard |
-|----------|-----------|
-| The icon in your menu bar | Click to see detailed usage |
+| Menu Bar | Claude Tab | Cursor Tab |
+|----------|------------|------------|
+| Icon in your menu bar | Claude usage details | Cursor usage details |
 
 ## Requirements
 
 - macOS 14.0 (Sonoma) or later
-- [Claude Code CLI](https://claude.ai/code) installed and authenticated
-- An active Claude subscription (Pro, Max, Team, or Enterprise)
+- For Claude: [Claude Code CLI](https://claude.ai/code) installed and authenticated
+- For Cursor: Browser access to cursor.com (for cookie authentication)
 
 ## Installation
 
@@ -59,15 +64,45 @@ A macOS menu bar app that displays your Claude API usage at a glance. See your s
 
 4. Launch the app from `/Applications/Claude-Checker.app`
 
+## Setup
+
+### Claude Setup
+
+Claude authentication is automatic if you have Claude Code CLI installed:
+
+1. Install and authenticate Claude Code CLI:
+   ```bash
+   claude login
+   ```
+2. Launch Claude-Checker - it will automatically read your credentials
+
+### Cursor Setup
+
+Cursor requires manual cookie configuration:
+
+1. Open the app and switch to the **Cursor** tab
+2. Open [cursor.com](https://cursor.com) in your browser and log in
+3. Open Developer Tools (Cmd+Option+I)
+4. Go to the **Network** tab and refresh the page
+5. Click any request to `cursor.com`
+6. In the Headers tab, find and copy the `Cookie` header value
+7. Paste the cookie into the app and click **Save Cookie**
+
+The cookie is stored locally and used to authenticate with Cursor's API.
+
 ## How It Works
 
-Claude-Checker reads your Claude authentication credentials and fetches usage data from Anthropic's API.
-
-### Authentication Flow
+### Claude Authentication
 
 1. **Keychain Access** - The app reads your OAuth token from macOS Keychain (stored by Claude Code CLI)
 2. **API Request** - It calls the Anthropic usage endpoint with your token
-3. **Display** - Usage percentages are shown in the menu bar and dashboard
+3. **Display** - Usage percentages are shown in the dashboard
+
+### Cursor Authentication
+
+1. **Cookie Storage** - Your browser cookie is stored in UserDefaults
+2. **API Request** - It calls Cursor's usage-summary endpoint
+3. **Display** - Plan usage and on-demand spending are shown
 
 ### Why Keychain Access?
 
@@ -78,11 +113,6 @@ Claude-Checker needs to read these credentials to fetch your usage data. This is
 - **The app runs without sandbox** - macOS sandboxing would prevent access to credentials stored by other apps
 - **No password is stored by Claude-Checker** - It only reads the existing credentials from Claude Code
 - **Your credentials never leave your machine** - They're only used to make API calls to Anthropic
-
-If you haven't authenticated with Claude Code yet, run:
-```bash
-claude login
-```
 
 ### Fallback: Credentials File
 
@@ -96,14 +126,14 @@ If Keychain access fails, the app falls back to reading credentials from:
 - **No data collection** - Claude-Checker doesn't collect or transmit any personal data
 - **Local only** - All processing happens on your machine
 - **Open source** - You can audit the code yourself
-- **Credentials stay secure** - OAuth tokens are read from Keychain, never stored separately
+- **Credentials stay secure** - OAuth tokens are read from Keychain, cookies stored locally
 
 ### Permissions Explained
 
 | Permission | Why It's Needed |
 |------------|-----------------|
 | Keychain Access | Read Claude Code's OAuth token to authenticate API requests |
-| Network Access | Fetch usage data from `api.anthropic.com` |
+| Network Access | Fetch usage data from `api.anthropic.com` and `cursor.com` |
 | Launch at Login | Optional - start the app automatically when you log in |
 
 ## Configuration
@@ -116,9 +146,13 @@ Toggle "Launch at Login" in the dashboard to have Claude-Checker start automatic
 
 Click the refresh button (↻) in the dashboard to manually update usage data.
 
+### Clear Cursor Cookie
+
+Click the (✕) button next to the refresh button in the Cursor tab to clear your stored cookie and reconfigure.
+
 ## Troubleshooting
 
-### "Credentials not found" Error
+### Claude: "Credentials not found" Error
 
 1. Make sure Claude Code CLI is installed and authenticated:
    ```bash
@@ -131,13 +165,21 @@ Click the refresh button (↻) in the dashboard to manually update usage data.
    security find-generic-password -s "Claude Code-credentials" -w 2>/dev/null && echo "Found" || echo "Not found"
    ```
 
-### "Token missing required scope" Error
+### Claude: "Token missing required scope" Error
 
 Your token needs the `user:profile` scope. Re-authenticate with Claude Code:
 ```bash
 claude logout
 claude login
 ```
+
+### Cursor: "Cookie expired or invalid" Error
+
+Your browser cookie has expired. Get a fresh cookie:
+1. Log in to cursor.com in your browser
+2. Open DevTools → Network tab
+3. Refresh and copy a new Cookie header
+4. Paste it in the app
 
 ### Icon Not Showing in Menu Bar
 
@@ -154,7 +196,7 @@ Since the app isn't notarized, macOS may block it:
 
 ## Technical Details
 
-### API Endpoint
+### Claude API Endpoint
 
 ```
 GET https://api.anthropic.com/api/oauth/usage
@@ -163,16 +205,21 @@ Headers:
   anthropic-beta: oauth-2025-04-20
 ```
 
-### Response Format
+### Cursor API Endpoint
 
-```json
-{
-  "five_hour": { "utilization": 25.0, "resets_at": "2024-01-15T10:00:00Z" },
-  "seven_day": { "utilization": 45.0, "resets_at": "2024-01-20T00:00:00Z" },
-  "seven_day_sonnet": { "utilization": 10.0, "resets_at": null },
-  "extra_usage": { "is_enabled": true, "monthly_limit": 100.0, "used_credits": 25.50 }
-}
 ```
+GET https://www.cursor.com/api/usage-summary
+Headers:
+  Cookie: <browser_cookie>
+```
+
+### Cursor Plan Limits
+
+| Plan | Monthly Limit |
+|------|---------------|
+| Pro | $20 |
+| Pro+ | $60 |
+| Ultra | $200 |
 
 ### Project Structure
 
@@ -183,15 +230,19 @@ Claude-Checker/
 ├── Assets.xcassets/            # App icon
 ├── Models/
 │   ├── Credentials.swift       # OAuth credential models
-│   └── UsageModels.swift       # API response models
+│   ├── UsageModels.swift       # Claude API response models
+│   └── CursorModels.swift      # Cursor API response models
 ├── Services/
 │   ├── KeychainService.swift   # Keychain + file fallback
-│   ├── UsageAPIClient.swift    # API client
+│   ├── UsageAPIClient.swift    # Claude API client
+│   ├── CursorAPIClient.swift   # Cursor API client
+│   ├── CursorCookieService.swift # Cookie storage
 │   └── LaunchAtLoginService.swift
 ├── ViewModels/
-│   └── UsageViewModel.swift    # @Observable state management
+│   ├── UsageViewModel.swift    # Claude state management
+│   └── CursorViewModel.swift   # Cursor state management
 └── Views/
-    ├── DashboardView.swift     # Main popover UI
+    ├── DashboardView.swift     # Main tabbed UI
     └── UsageProgressBar.swift  # Reusable progress component
 ```
 
@@ -213,8 +264,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with SwiftUI for macOS
 - Uses SF Symbols for iconography
-- Inspired by the need to keep track of Claude usage limits
+- Cursor API documentation from [CodexBar](https://github.com/steipete/CodexBar)
 
 ---
 
-**Note:** This is an unofficial app and is not affiliated with Anthropic. Claude is a trademark of Anthropic.
+**Note:** This is an unofficial app and is not affiliated with Anthropic or Cursor. Claude is a trademark of Anthropic.
