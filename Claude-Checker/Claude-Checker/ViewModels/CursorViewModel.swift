@@ -153,14 +153,25 @@ class CursorViewModel {
             billingResetsAt = summary.billingEndDate
             
             // Plan usage
+            // Always use default plan limit based on membership type
+            // The API's limit field is unreliable (often equals used amount)
+            planLimitUSD = summary.defaultPlanLimitUSD
+            
             if let plan = summary.individualUsage?.plan {
-                planPercentage = plan.percentage
                 planUsedUSD = plan.usedUSD
-                planLimitUSD = plan.limitUSD
+                
+                // Calculate percentage based on the membership limit
+                if planLimitUSD > 0 {
+                    planPercentage = min(planUsedUSD / planLimitUSD, 1.0)
+                } else if let totalPercent = plan.totalPercentUsed {
+                    // Fall back to API percentage if available (for unknown plans)
+                    planPercentage = totalPercent <= 1 ? totalPercent : totalPercent / 100.0
+                } else {
+                    planPercentage = 0
+                }
             } else {
                 planPercentage = 0
                 planUsedUSD = 0
-                planLimitUSD = 0
             }
             
             // On-demand usage

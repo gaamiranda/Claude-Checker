@@ -206,12 +206,38 @@ extension CursorUsageSummary {
             return "Enterprise"
         case "pro":
             return "Pro"
+        case "pro_plus", "pro+":
+            return "Pro+"
+        case "ultra":
+            return "Ultra"
         case "hobby":
             return "Hobby"
         case "team":
             return "Team"
         default:
             return type.capitalized
+        }
+    }
+    
+    /// Default plan limit in USD based on membership type
+    /// - Pro: $20
+    /// - Pro+: $60
+    /// - Ultra: $200
+    /// - Hobby: $0 (free tier)
+    var defaultPlanLimitUSD: Double {
+        guard let type = membershipType else { return 0 }
+        switch type.lowercased() {
+        case "pro":
+            return 20.0
+        case "pro_plus", "pro+":
+            return 60.0
+        case "ultra":
+            return 200.0
+        case "enterprise", "team":
+            // Enterprise/Team plans vary, use API value or fallback
+            return individualUsage?.plan?.limitUSD ?? 0
+        default:
+            return 0
         }
     }
 }
