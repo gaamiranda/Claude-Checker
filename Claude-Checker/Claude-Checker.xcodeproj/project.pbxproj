@@ -10,10 +10,14 @@
 		A1000001001000010010 /* ClaudeCheckerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000001001000010001 /* ClaudeCheckerApp.swift */; };
 		A1000002001000010010 /* Credentials.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002001000010001 /* Credentials.swift */; };
 		A1000002001000010011 /* UsageModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002001000010002 /* UsageModels.swift */; };
+		A1000002001000010012 /* CursorModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000002001000010003 /* CursorModels.swift */; };
 		A1000003001000010010 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010001 /* KeychainService.swift */; };
 		A1000003001000010011 /* UsageAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010002 /* UsageAPIClient.swift */; };
 		A1000003001000010012 /* LaunchAtLoginService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010003 /* LaunchAtLoginService.swift */; };
+		A1000003001000010013 /* CursorCookieService.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010004 /* CursorCookieService.swift */; };
+		A1000003001000010014 /* CursorAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000003001000010005 /* CursorAPIClient.swift */; };
 		A1000004001000010010 /* UsageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004001000010001 /* UsageViewModel.swift */; };
+		A1000004001000010011 /* CursorViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000004001000010002 /* CursorViewModel.swift */; };
 		A1000005001000010010 /* UsageProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010001 /* UsageProgressBar.swift */; };
 		A1000005001000010011 /* DashboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000005001000010002 /* DashboardView.swift */; };
 		A1000006001000010010 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1000006001000010001 /* Assets.xcassets */; };
@@ -26,10 +30,14 @@
 		A1000001001000010004 /* Claude-Checker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Claude-Checker.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1000002001000010001 /* Credentials.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Credentials.swift; sourceTree = "<group>"; };
 		A1000002001000010002 /* UsageModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageModels.swift; sourceTree = "<group>"; };
+		A1000002001000010003 /* CursorModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorModels.swift; sourceTree = "<group>"; };
 		A1000003001000010001 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		A1000003001000010002 /* UsageAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageAPIClient.swift; sourceTree = "<group>"; };
 		A1000003001000010003 /* LaunchAtLoginService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchAtLoginService.swift; sourceTree = "<group>"; };
+		A1000003001000010004 /* CursorCookieService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorCookieService.swift; sourceTree = "<group>"; };
+		A1000003001000010005 /* CursorAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorAPIClient.swift; sourceTree = "<group>"; };
 		A1000004001000010001 /* UsageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageViewModel.swift; sourceTree = "<group>"; };
+		A1000004001000010002 /* CursorViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CursorViewModel.swift; sourceTree = "<group>"; };
 		A1000005001000010001 /* UsageProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsageProgressBar.swift; sourceTree = "<group>"; };
 		A1000005001000010002 /* DashboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DashboardView.swift; sourceTree = "<group>"; };
 		A1000006001000010001 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -74,6 +82,7 @@
 			children = (
 				A1000002001000010001 /* Credentials.swift */,
 				A1000002001000010002 /* UsageModels.swift */,
+				A1000002001000010003 /* CursorModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -84,6 +93,8 @@
 				A1000003001000010001 /* KeychainService.swift */,
 				A1000003001000010003 /* LaunchAtLoginService.swift */,
 				A1000003001000010002 /* UsageAPIClient.swift */,
+				A1000003001000010004 /* CursorCookieService.swift */,
+				A1000003001000010005 /* CursorAPIClient.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -92,6 +103,7 @@
 			isa = PBXGroup;
 			children = (
 				A1000004001000010001 /* UsageViewModel.swift */,
+				A1000004001000010002 /* CursorViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -185,10 +197,14 @@
 				A1000001001000010010 /* ClaudeCheckerApp.swift in Sources */,
 				A1000002001000010010 /* Credentials.swift in Sources */,
 				A1000002001000010011 /* UsageModels.swift in Sources */,
+				A1000002001000010012 /* CursorModels.swift in Sources */,
 				A1000003001000010010 /* KeychainService.swift in Sources */,
 				A1000003001000010011 /* UsageAPIClient.swift in Sources */,
 				A1000003001000010012 /* LaunchAtLoginService.swift in Sources */,
+				A1000003001000010013 /* CursorCookieService.swift in Sources */,
+				A1000003001000010014 /* CursorAPIClient.swift in Sources */,
 				A1000004001000010010 /* UsageViewModel.swift in Sources */,
+				A1000004001000010011 /* CursorViewModel.swift in Sources */,
 				A1000005001000010010 /* UsageProgressBar.swift in Sources */,
 				A1000005001000010011 /* DashboardView.swift in Sources */,
 			);

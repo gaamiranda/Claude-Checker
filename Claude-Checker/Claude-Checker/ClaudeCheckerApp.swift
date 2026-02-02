@@ -5,32 +5,40 @@ struct ClaudeCheckerApp: App {
     
     // MARK: - State
     
-    /// Main view model for usage data
-    @State private var viewModel: UsageViewModel
+    /// Main view model for Claude usage data
+    @State private var usageViewModel: UsageViewModel
+    
+    /// View model for Cursor usage data
+    @State private var cursorViewModel: CursorViewModel
     
     // MARK: - Initialization
     
     init() {
-        // Create and store the view model
+        // Create and store the view models
         let vm = UsageViewModel()
-        _viewModel = State(initialValue: vm)
+        let cursorVm = CursorViewModel()
+        _usageViewModel = State(initialValue: vm)
+        _cursorViewModel = State(initialValue: cursorVm)
         
         // Initialize launch at login on first launch (enabled by default)
         LaunchAtLoginService.initializeOnFirstLaunch()
         
-        // Start auto-refresh immediately on app launch
+        // Start auto-refresh for both providers
         vm.startAutoRefresh()
+        cursorVm.startAutoRefresh()
     }
     
     // MARK: - Body
     
     var body: some Scene {
         MenuBarExtra {
-            DashboardView(viewModel: viewModel)
+            DashboardView(
+                usageViewModel: usageViewModel,
+                cursorViewModel: cursorViewModel
+            )
         } label: {
-            // Dynamic colored "C" in square based on usage
+            // Static "C" in square icon
             Image(systemName: "c.square.fill")
-                .foregroundStyle(viewModel.statusColor)
         }
         .menuBarExtraStyle(.window)
     }
