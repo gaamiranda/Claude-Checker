@@ -35,6 +35,9 @@ class UsageViewModel {
     /// Error message if last fetch failed
     var errorMessage: String?
     
+    /// Whether the error requires user to re-authenticate
+    var requiresReauthentication = false
+    
     /// Timestamp of last successful data fetch
     var lastUpdated: Date?
     
@@ -130,14 +133,21 @@ class UsageViewModel {
         
         isLoading = true
         errorMessage = nil
+        requiresReauthentication = false
+        
+        // Check if credentials file has changed (user ran `claude login`)
+        KeychainService.invalidateCacheIfNeeded()
         
         do {
-            // Get credentials
+            // Get credentials (may be from cache if recently refreshed)
             let credentials = try KeychainService.getCredentials()
             planTier = credentials.planDisplayName
             
-            // Fetch usage data
-            let usage = try await apiClient.fetchUsage(token: credentials.accessToken)
+            // Fetch usage data with automatic token refresh
+            let (usage, updatedCredentials) = try await apiClient.fetchUsage(credentials: credentials)
+            
+            // Update plan tier in case it changed after token refresh
+            planTier = updatedCredentials.planDisplayName
             
             // Update state with fetched data
             sessionPercentage = usage.fiveHour?.percentage ?? 0
@@ -159,6 +169,10 @@ class UsageViewModel {
             lastUpdated = Date()
             isFirstLoad = false
             
+        } catch let error as APIError {
+            handleError(error)
+        } catch let error as CredentialError {
+            handleCredentialError(error)
         } catch {
             errorMessage = error.localizedDescription
         }
@@ -173,6 +187,32 @@ class UsageViewModel {
     }
     
     // MARK: - Private Helpers
+    
+    /// Handles API errors with specific messaging
+    private func handleError(_ error: APIError) {
+        errorMessage = error.localizedDescription
+        requiresReauthentication = error.requiresReauthentication
+        
+        // If re-authentication is required, clear the cache so next attempt reads fresh
+        if error.requiresReauthentication {
+            KeychainService.clearCache()
+        }
+    }
+    
+    /// Handles credential errors
+    private func handleCredentialError(_ error: CredentialError) {
+        errorMessage = error.localizedDescription
+        
+        switch error {
+        case .notFound, .tokenExpired:
+            requiresReauthentication = true
+        case .refreshFailed:
+            requiresReauthentication = true
+            KeychainService.clearCache()
+        default:
+            requiresReauthentication = false
+        }
+    }
     
     /// Parses ISO8601 date string from API
     private func parseResetTime(_ dateString: String?) -> Date? {

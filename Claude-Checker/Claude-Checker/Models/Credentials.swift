@@ -14,6 +14,47 @@ struct OAuthCredentials: Codable {
     let subscriptionType: String?
     let rateLimitTier: String?
     
+    // MARK: - Expiration Checking
+    
+    /// The expiration date parsed from expiresAt (milliseconds since epoch)
+    var expirationDate: Date? {
+        guard let expiresAt = expiresAt else { return nil }
+        // expiresAt is in milliseconds, convert to seconds
+        return Date(timeIntervalSince1970: Double(expiresAt) / 1000.0)
+    }
+    
+    /// Whether the access token is expired
+    var isExpired: Bool {
+        guard let expDate = expirationDate else {
+            // If no expiration date, assume expired to be safe
+            return true
+        }
+        return Date() >= expDate
+    }
+    
+    /// Whether the access token will expire within the given time interval
+    /// - Parameter interval: Time interval in seconds (default 5 minutes)
+    func willExpireSoon(within interval: TimeInterval = 300) -> Bool {
+        guard let expDate = expirationDate else {
+            return true
+        }
+        return Date().addingTimeInterval(interval) >= expDate
+    }
+    
+    /// Time interval until token expires (negative if already expired)
+    var expiresIn: TimeInterval? {
+        guard let expDate = expirationDate else { return nil }
+        return expDate.timeIntervalSinceNow
+    }
+    
+    /// Whether a refresh token is available
+    var canRefresh: Bool {
+        guard let refreshToken = refreshToken else { return false }
+        return !refreshToken.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+    }
+    
+    // MARK: - Plan Display
+    
     /// Returns the plan tier as a display-friendly string
     var planDisplayName: String {
         // First try subscriptionType, then rateLimitTier
@@ -47,6 +88,24 @@ struct OAuthCredentials: Codable {
         
         return subscriptionType?.capitalized ?? "Unknown"
     }
+    
+    // MARK: - Creating Updated Credentials
+    
+    /// Creates a new OAuthCredentials with an updated access token and expiration
+    func withRefreshedToken(
+        accessToken: String,
+        refreshToken: String?,
+        expiresAt: Int64
+    ) -> OAuthCredentials {
+        OAuthCredentials(
+            accessToken: accessToken,
+            refreshToken: refreshToken ?? self.refreshToken,
+            expiresAt: expiresAt,
+            scopes: self.scopes,
+            subscriptionType: self.subscriptionType,
+            rateLimitTier: self.rateLimitTier
+        )
+    }
 }
 
 /// Legacy flat structure for file-based credentials (fallback)
@@ -65,10 +124,16 @@ struct LegacyCredentials: Codable {
     
     /// Convert to OAuthCredentials for unified handling
     func toOAuthCredentials() -> OAuthCredentials {
-        OAuthCredentials(
+        // Try to parse expiresAt as a number (milliseconds)
+        var expiresAtInt: Int64? = nil
+        if let expiresAtStr = expiresAt {
+            expiresAtInt = Int64(expiresAtStr)
+        }
+        
+        return OAuthCredentials(
             accessToken: accessToken,
             refreshToken: refreshToken,
-            expiresAt: nil,
+            expiresAt: expiresAtInt,
             scopes: nil,
             subscriptionType: nil,
             rateLimitTier: rateLimitTier
