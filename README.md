@@ -264,7 +264,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 - Built with SwiftUI for macOS
 - Uses SF Symbols for iconography
-- Cursor API documentation from [CodexBar](https://github.com/steipete/CodexBar)
 
 ---
 
